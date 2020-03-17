@@ -29,8 +29,6 @@ add_executable(create
   filepicker.cpp
   filepicker.h
   filepicker.ui
-  projectfile.cpp
-  projectfile.h
   config.cpp
   config.h
 )
