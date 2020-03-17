@@ -7,6 +7,8 @@
 
 #include <QMainWindow>
 #include <QToolBar>
+#include <QTableWidgetItem>
+#include <QDir>
 #include <painter.h>
 
 QT_BEGIN_NAMESPACE
@@ -30,9 +32,13 @@ private:
     Ui::MainWindow *ui;
     QToolBar *toolBar;
     Painter *painter;
-    QString where;
+    QDir where;
     int imageWidth = 640;
     int imageHeight = 480;
     Config proj;
+    QDir frameDir;
+    QTableWidgetItem *emptyWidget;
+    QTableWidgetItem *fullWidget;
+    void drawFrames();
 };
 #endif // MAINWINDOW_H

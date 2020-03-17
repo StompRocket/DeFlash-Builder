@@ -93,3 +93,15 @@ void Config::set(QString key, QVariant val)
     if (updateInPlace)
         save();
 }
+
+QVariant Config::getOrSet(QString key, QVariant val)
+{
+    if (!data.contains(key))
+        set(key, val);
+    return get(key);
+}
+
+bool Config::exists(QString key)
+{
+    return data.contains(key);
+}

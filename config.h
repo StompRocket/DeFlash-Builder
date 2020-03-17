@@ -15,6 +15,8 @@ public:
     explicit Config(QString file = "", bool autosave = false, QObject *parent = nullptr);
     QVariant &get(QString key);
     void set(QString key, QVariant val);
+    QVariant getOrSet(QString key, QVariant val);
+    bool exists(QString key);
     void save();
     void update();
 

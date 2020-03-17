@@ -5,11 +5,15 @@
 #include <QDateTime>
 #include <QDebug>
 
-MainWindow::MainWindow(QString where, QWidget *parent)
+const static double createVersion = 0.1;
+
+MainWindow::MainWindow(QString w, QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::MainWindow)
-    , where(where)
+    , where(w)
     , proj(QDir(where).filePath("create.cfg"), true, this)
+    , emptyWidget(new QTableWidgetItem(""))
+    , fullWidget(new QTableWidgetItem("•"))
 {
     ui->setupUi(this);
     toolBar = new QToolBar();
@@ -27,8 +31,24 @@ MainWindow::MainWindow(QString where, QWidget *parent)
     ui->frameSplitter->setStretchFactor(0, 100);
     setCentralWidget(ui->frameSplitter);
 
-    qDebug() << proj.get("meta.create-version").toString();
-    proj.set("meta.last-opened", QVariant(QDateTime().time().msec()));
+    setWindowTitle(QString("StompRocket Create - %1").arg(where.path()));
+
+    double projectVersion = proj.getOrSet("meta.create-version", createVersion).toDouble();
+    if (!proj.exists("frames.location"))
+    {
+        frameDir = QDir(where);
+        frameDir.cd(proj.getOrSet("frames.location", "assets/frames").toString());
+    }
+    if (projectVersion > createVersion)
+    {
+        qDebug() << "Warning: Project created in a newer version of Create, it might not work.";
+    }
+
+    fullWidget->setBackgroundColor(QColor(88, 237, 162));
+
+    ui->frameTable->setSelectionMode(QAbstractItemView::SelectionMode::SingleSelection);
+
+    drawFrames();
 }
 
 MainWindow::~MainWindow()
@@ -53,4 +73,13 @@ void MainWindow::on_actionPen_triggered()
 void MainWindow::on_actionEraser_triggered()
 {
     painter->tool = Tool::eraser;
+}
+
+void MainWindow::drawFrames()
+{
+    qDebug() << "Setting Frames";
+    ui->frameTable->setRowCount(1);
+    ui->frameTable->setColumnCount(5);
+    ui->frameTable->setVerticalHeaderItem(0, new QTableWidgetItem(""));
+    ui->frameTable->setItem(0, 0, new QTableWidgetItem("Hello!"));
 }
