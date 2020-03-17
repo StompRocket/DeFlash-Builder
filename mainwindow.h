@@ -1,6 +1,10 @@
 #ifndef MAINWINDOW_H
 #define MAINWINDOW_H
 
+// DEPRECATED:
+// #include "projectfile.h"
+#include "config.h"
+
 #include <QMainWindow>
 #include <QToolBar>
 #include <painter.h>
@@ -19,9 +23,7 @@ public:
 
 private slots:
     void on_strokeWidth_valueChanged(int arg1);
-
     void on_actionPen_triggered();
-
     void on_actionEraser_triggered();
 
 private:
@@ -31,5 +33,6 @@ private:
     QString where;
     int imageWidth = 640;
     int imageHeight = 480;
+    Config proj;
 };
 #endif // MAINWINDOW_H

@@ -24,8 +24,9 @@ ProjectDialog::~ProjectDialog()
 
 void ProjectDialog::onProjectCreated(QString where)
 {
-    auto *win = new MainWindow(where);
-    win->show();
+    auto *mw = new MainWindow(where, this);
+    mw->show();
+    delete mw;
 }
 
 void ProjectDialog::on_newProjectButton_clicked()

@@ -1,10 +1,15 @@
 #include "mainwindow.h"
 #include "./ui_mainwindow.h"
 
+#include <QDir>
+#include <QDateTime>
+#include <QDebug>
+
 MainWindow::MainWindow(QString where, QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::MainWindow)
     , where(where)
+    , proj(QDir(where).filePath("create.cfg"), true, this)
 {
     ui->setupUi(this);
     toolBar = new QToolBar();
@@ -21,6 +26,9 @@ MainWindow::MainWindow(QString where, QWidget *parent)
     ui->canvasSplitter->setStretchFactor(0, 3);
     ui->frameSplitter->setStretchFactor(0, 100);
     setCentralWidget(ui->frameSplitter);
+
+    qDebug() << proj.get("meta.create-version").toString();
+    proj.set("meta.last-opened", QVariant(QDateTime().time().msec()));
 }
 
 MainWindow::~MainWindow()
