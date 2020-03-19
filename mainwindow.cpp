@@ -12,8 +12,6 @@ MainWindow::MainWindow(QString w, QWidget *parent)
     , ui(new Ui::MainWindow)
     , where(w)
     , proj(QDir(where).filePath("create.cfg"), true, this)
-    , emptyWidget(new QTableWidgetItem(""))
-    , fullWidget(new QTableWidgetItem("•"))
 {
     ui->setupUi(this);
     toolBar = new QToolBar();
@@ -44,11 +42,17 @@ MainWindow::MainWindow(QString w, QWidget *parent)
         qDebug() << "Warning: Project created in a newer version of Create, it might not work.";
     }
 
-    fullWidget->setBackgroundColor(QColor(88, 237, 162));
-
     ui->frameTable->setSelectionMode(QAbstractItemView::SelectionMode::SingleSelection);
+    ui->frameTable->setEditTriggers(QAbstractItemView::EditTrigger::NoEditTriggers);
+    ui->frameTable->setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Maximum);
+    ui->frameTable->sizePolicy().setVerticalStretch(0);
+
+    frames.append(AnimationFrame());
+    frames.append(AnimationFrame());
+    painter->setFrame(&frames[1]);
 
     drawFrames();
+    selectFrame(1);
 }
 
 MainWindow::~MainWindow()
@@ -79,7 +83,28 @@ void MainWindow::drawFrames()
 {
     qDebug() << "Setting Frames";
     ui->frameTable->setRowCount(1);
-    ui->frameTable->setColumnCount(5);
+    ui->frameTable->setColumnCount(frames.length());
     ui->frameTable->setVerticalHeaderItem(0, new QTableWidgetItem(""));
-    ui->frameTable->setItem(0, 0, new QTableWidgetItem("Hello!"));
+
+    for (int i = 0; i < frames.length(); i++)
+    {
+        ui->frameTable->setItem(0, i, &frames[i].tableWidget);
+    }
+}
+
+int MainWindow::selectFrame(int which)
+{
+    if (which > 0 && which < frames.length())
+        selectedFrame = which;
+
+    //ui->frameTable->setCurrentCell(0, selectedFrame);
+    painter->setFrame(&frames[which]);
+    return selectedFrame;
+}
+
+void MainWindow::on_frameTable_cellClicked(int, int frameIndex)
+{
+    qDebug() << frameIndex << "clicked";
+    selectFrame(frameIndex);
+    //drawFrames();
 }

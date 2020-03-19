@@ -11,11 +11,21 @@ Painter::Painter(QWidget *parent) : QWidget(parent)
 void Painter::setSize(int width, int height)
 {
     setFixedSize(width, height);
+    if (frame != nullptr)
+    {
+    }
+}
+
+void Painter::setFrame(AnimationFrame *f)
+{
+    frame = f;
+    setSize(frame->getWidth(), frame->getHeight());
 }
 
 void Painter::clearImage()
 {
-    image.fill(qRgb(255, 255, 255));
+    if (frame == nullptr) return;
+    frame->image.fill(qRgb(255, 255, 255));
     modified = true;
     update();
 }
@@ -51,17 +61,21 @@ void Painter::mouseReleaseEvent(QMouseEvent *event)
 
 void Painter::paintEvent(QPaintEvent *event)
 {
+    if (frame == nullptr) return;
     QPainter painter(this);
+    painter.setPen(pen);
     QRect r = event->rect();
-    painter.drawImage(r, image, r);
+    painter.drawImage(r, frame->image, r);
 }
 
 void Painter::resizeEvent(QResizeEvent *event)
 {
-    if (width() > image.width() || height() > image.height()) {
-        int newWidth = qMax(width() + 128, image.width());
-        int newHeight = qMax(height() + 128, image.height());
-        resizeImage(&image, QSize(newWidth, newHeight));
+    if (frame == nullptr) return;
+    auto image = &frame->image;
+    if (width() > image->width() || height() > image->height()) {
+        int newWidth = qMax(width() + 128, image->width());
+        int newHeight = qMax(height() + 128, image->height());
+        resizeImage(image, QSize(newWidth, newHeight));
         update();
     }
     QWidget::resizeEvent(event);
@@ -69,15 +83,21 @@ void Painter::resizeEvent(QResizeEvent *event)
 
 void Painter::drawLineTo(const QPoint &point)
 {
-    QPainter painter(&image);
+    if (frame == nullptr) return;
+
+    qDebug() << "Is frame image null?" << frame->image.isNull();
+
+    QPainter painter(&frame->image);
     if (tool == Tool::pen)
-        painter.setPen(QPen(penColor, penWidth, Qt::SolidLine, Qt::RoundCap,
-                            Qt::RoundJoin));
+        pen = QPen(penColor, penWidth, Qt::SolidLine, Qt::RoundCap,
+                   Qt::RoundJoin);
     else
-        painter.setPen(QPen(Qt::white, penWidth, Qt::SolidLine,
-                            Qt::RoundCap, Qt::RoundJoin));
+        pen = QPen(Qt::white, penWidth, Qt::SolidLine,
+                   Qt::RoundCap, Qt::RoundJoin);
     painter.drawLine(lastPoint, point);
     modified = true;
+
+    frame->update();
 
     int rad = (penWidth / 2) + 2;
     update(QRect(lastPoint, point)

@@ -4,6 +4,7 @@
 // DEPRECATED:
 // #include "projectfile.h"
 #include "config.h"
+#include "animationframe.h"
 
 #include <QMainWindow>
 #include <QToolBar>
@@ -28,6 +29,8 @@ private slots:
     void on_actionPen_triggered();
     void on_actionEraser_triggered();
 
+    void on_frameTable_cellClicked(int, int frameIndex);
+
 private:
     Ui::MainWindow *ui;
     QToolBar *toolBar;
@@ -37,8 +40,10 @@ private:
     int imageHeight = 480;
     Config proj;
     QDir frameDir;
-    QTableWidgetItem *emptyWidget;
-    QTableWidgetItem *fullWidget;
+    QList<AnimationFrame> frames;
+    int selectedFrame;
+
+    int selectFrame(int which);
     void drawFrames();
 };
 #endif // MAINWINDOW_H

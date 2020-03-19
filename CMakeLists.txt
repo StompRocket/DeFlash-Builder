@@ -31,6 +31,8 @@ add_executable(create
   filepicker.ui
   config.cpp
   config.h
+  animationframe.h
+  animationframe.cpp
 )
 
 target_link_libraries(create PRIVATE Qt5::Widgets)

@@ -3,7 +3,9 @@
 
 #include <QWidget>
 #include <QMouseEvent>
+#include <QPen>
 #include <tool.h>
+#include "animationframe.h"
 
 class Painter : public QWidget
 {
@@ -13,12 +15,12 @@ public:
     void setSize(int width, int height);
     int penWidth = 10;
     double aspectRatio = 480 / 640; // height / width
+    void setFrame(AnimationFrame *f);
     QColor penColor = Qt::black;
     Tool tool = Tool::pen;
 
 public slots:
     void clearImage();
-    // void print();
 
 protected:
     void mousePressEvent(QMouseEvent *event) override;
@@ -30,10 +32,10 @@ protected:
 private:
     void drawLineTo(const QPoint &point);
     void resizeImage(QImage *image, const QSize &newSize);
-
+    QPen pen;
     bool modified = false;
     bool drawing = false;
-    QImage image;
+    AnimationFrame *frame = nullptr;
     QPoint lastPoint;
 };
 
