@@ -30,6 +30,7 @@ public:
     QTableWidgetItem tableWidget;
     int getHeight() const;
     int getWidth() const;
+    void clear();
 
 private:
     bool blank = true;

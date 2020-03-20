@@ -31,6 +31,8 @@ private slots:
 
     void on_frameTable_cellClicked(int, int frameIndex);
 
+    void on_actionNextFrame_triggered();
+
 private:
     Ui::MainWindow *ui;
     QToolBar *toolBar;
@@ -41,7 +43,7 @@ private:
     Config proj;
     QDir frameDir;
     QList<AnimationFrame> frames;
-    int selectedFrame;
+    int selectedFrame = 0;
 
     int selectFrame(int which);
     void drawFrames();

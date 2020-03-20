@@ -18,6 +18,8 @@ MainWindow::MainWindow(QString w, QWidget *parent)
     painter = new Painter(ui->painterScrollArea);
     toolBar->addAction(ui->actionPen);
     toolBar->addAction(ui->actionEraser);
+    toolBar->addSeparator();
+    toolBar->addAction(ui->actionNextFrame);
     addToolBar(toolBar);
     ui->painterScrollArea->setWidget(painter);
 
@@ -48,11 +50,10 @@ MainWindow::MainWindow(QString w, QWidget *parent)
     ui->frameTable->sizePolicy().setVerticalStretch(0);
 
     frames.append(AnimationFrame());
-    frames.append(AnimationFrame());
-    painter->setFrame(&frames[1]);
+    painter->setFrame(&frames[0]);
 
     drawFrames();
-    selectFrame(1);
+    selectFrame(0);
 }
 
 MainWindow::~MainWindow()
@@ -94,8 +95,16 @@ void MainWindow::drawFrames()
 
 int MainWindow::selectFrame(int which)
 {
-    if (which > 0 && which < frames.length())
+    ui->frameTable->selectionModel()->select(
+                ui->frameTable->model()->index(0, selectedFrame),
+                QItemSelectionModel::Deselect);
+
+    if (which >= 0 && which < frames.length())
         selectedFrame = which;
+
+    ui->frameTable->selectionModel()->select(
+                ui->frameTable->model()->index(0, selectedFrame),
+                QItemSelectionModel::Select);
 
     //ui->frameTable->setCurrentCell(0, selectedFrame);
     painter->setFrame(&frames[which]);
@@ -107,4 +116,28 @@ void MainWindow::on_frameTable_cellClicked(int, int frameIndex)
     qDebug() << frameIndex << "clicked";
     selectFrame(frameIndex);
     //drawFrames();
+}
+
+void MainWindow::on_actionNextFrame_triggered()
+{
+    qDebug() << "Deselecting current frame";
+    ui->frameTable->selectionModel()->select(
+                ui->frameTable->model()->index(0, selectedFrame),
+                QItemSelectionModel::Deselect);
+    qDebug() << "Currently selected" << selectedFrame << "of" << frames.length();
+    if (selectedFrame == frames.length() - 1)
+    {
+        qDebug() << "Already on the last frame, will make a new one";
+        // Create another frame
+        frames.append(AnimationFrame());
+        ui->frameTable->setColumnCount(frames.length());
+        // this is slow, fix it:
+        drawFrames();
+        selectFrame(frames.length() - 1);
+    }
+    else
+        selectFrame(selectedFrame + 1);
+    ui->frameTable->selectionModel()->select(
+                ui->frameTable->model()->index(0, selectedFrame),
+                QItemSelectionModel::Select);
 }

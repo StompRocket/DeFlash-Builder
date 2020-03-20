@@ -10,13 +10,13 @@ AnimationFrame::AnimationFrame(int width, int height, QObject *parent)
     , height(height)
     , width(width)
 {
-
+    clear();
 }
 
 AnimationFrame::AnimationFrame(const AnimationFrame &frame, QObject *parent)
     : QObject(parent)
     , image(frame.image)
-    , tableWidget(" ")
+    , tableWidget(frame.tableWidget)
     , height(frame.height)
     , width(frame.width)
 {
@@ -26,7 +26,16 @@ AnimationFrame::AnimationFrame(const AnimationFrame &frame, QObject *parent)
 AnimationFrame &AnimationFrame::operator=(const AnimationFrame &frame)
 {
     image = frame.image;
+    tableWidget = frame.tableWidget;
+    height = frame.height;
+    width = frame.width;
     return *this;
+}
+
+void AnimationFrame::clear()
+{
+    image.fill(QColor(255, 255, 255));
+    blank = true;
 }
 
 void AnimationFrame::resize(const QSize newSize)

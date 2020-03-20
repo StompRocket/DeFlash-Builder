@@ -20,6 +20,12 @@ void Painter::setFrame(AnimationFrame *f)
 {
     frame = f;
     setSize(frame->getWidth(), frame->getHeight());
+    //QPainter p{this};
+    //p.setPen(pen);
+    //QRect r{0, 0, frame->getWidth(), frame->getHeight()};
+    //p.drawImage(r, frame->image, r);
+    //qDebug() << "Redrew" << r;
+    update();
 }
 
 void Painter::clearImage()
