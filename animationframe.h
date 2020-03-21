@@ -31,6 +31,7 @@ public:
     int getHeight() const;
     int getWidth() const;
     void clear();
+    bool saveTo(QString path, const char *format = nullptr);
 
 private:
     bool blank = true;

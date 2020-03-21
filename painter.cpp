@@ -36,6 +36,27 @@ void Painter::clearImage()
     update();
 }
 
+void Painter::setPenWidth(int width)
+{
+    pen.setWidth(width);
+}
+
+int Painter::getPenWidth()
+{
+    return pen.width();
+}
+
+void Painter::setPenColor(QColor &color)
+{
+    penColor = color;
+    pen.setColor(penColor);
+}
+
+QColor Painter::getPenColor()
+{
+    return penColor;
+}
+
 void Painter::mousePressEvent(QMouseEvent *event)
 {
     if (event->button() == Qt::LeftButton)
@@ -95,17 +116,17 @@ void Painter::drawLineTo(const QPoint &point)
 
     QPainter painter(&frame->image);
     if (tool == Tool::pen)
-        pen = QPen(penColor, penWidth, Qt::SolidLine, Qt::RoundCap,
+        pen = QPen(penColor, getPenWidth(), Qt::SolidLine, Qt::RoundCap,
                    Qt::RoundJoin);
     else
-        pen = QPen(Qt::white, penWidth, Qt::SolidLine,
+        pen = QPen(Qt::white, getPenWidth(), Qt::SolidLine,
                    Qt::RoundCap, Qt::RoundJoin);
     painter.drawLine(lastPoint, point);
     modified = true;
 
     frame->update();
 
-    int rad = (penWidth / 2) + 2;
+    int rad = (getPenWidth() / 2) + 2;
     update(QRect(lastPoint, point)
            .normalized()
            .adjusted(-rad, -rad, +rad, +rad));

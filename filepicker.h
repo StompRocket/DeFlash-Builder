@@ -5,9 +5,11 @@
 #include <QLineEdit>
 #include <QFileDialog>
 
+QT_BEGIN_NAMESPACE
 namespace Ui {
 class FilePicker;
 }
+QT_END_NAMESPACE
 
 class FilePicker : public QWidget
 {

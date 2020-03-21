@@ -23,7 +23,7 @@ MainWindow::MainWindow(QString w, QWidget *parent)
     addToolBar(toolBar);
     ui->painterScrollArea->setWidget(painter);
 
-    ui->strokeWidth->setValue(painter->penWidth);
+    ui->strokeWidth->setValue(painter->getPenWidth());
     painter->setSize(imageWidth, imageHeight);
 
     ui->canvasSplitter->setChildrenCollapsible(false);
@@ -34,11 +34,12 @@ MainWindow::MainWindow(QString w, QWidget *parent)
     setWindowTitle(QString("StompRocket Create - %1").arg(where.path()));
 
     double projectVersion = proj.getOrSet("meta.create-version", createVersion).toDouble();
-    if (!proj.exists("frames.location"))
-    {
-        frameDir = QDir(where);
-        frameDir.cd(proj.getOrSet("frames.location", "assets/frames").toString());
-    }
+
+    frameDir = QDir(where);
+    QString frameSubDir = proj.getOrSet("frames.location", "rames").toString();
+    qDebug() << "creating" << frameSubDir << frameDir.mkdir(frameSubDir);
+    frameDir.cd(frameSubDir);
+
     if (projectVersion > createVersion)
     {
         qDebug() << "Warning: Project created in a newer version of Create, it might not work.";
@@ -66,8 +67,8 @@ MainWindow::~MainWindow()
 void MainWindow::on_strokeWidth_valueChanged(int width)
 {
     if (width > 0 && width < 128)
-        painter->penWidth = width;
-    else ui->strokeWidth->setValue(painter->penWidth);
+        painter->setPenWidth(width);
+    else ui->strokeWidth->setValue(painter->getPenWidth());
 }
 
 void MainWindow::on_actionPen_triggered()
@@ -108,6 +109,8 @@ int MainWindow::selectFrame(int which)
 
     //ui->frameTable->setCurrentCell(0, selectedFrame);
     painter->setFrame(&frames[which]);
+    proj.set("frames.current-selected", selectedFrame);
+    proj.set("frames.count", frames.length());
     return selectedFrame;
 }
 
@@ -140,4 +143,18 @@ void MainWindow::on_actionNextFrame_triggered()
     ui->frameTable->selectionModel()->select(
                 ui->frameTable->model()->index(0, selectedFrame),
                 QItemSelectionModel::Select);
+}
+
+void MainWindow::saveFrames()
+{
+    for (int i = 0; i < frames.length(); i++)
+    {
+        frames[i].saveTo(frameDir.filePath(QString("frame%1.png").arg(i)), "png");
+    }
+}
+
+void MainWindow::on_actionSave_triggered()
+{
+    qDebug() << "saving frames to" << frameDir;
+    saveFrames();
 }

@@ -58,7 +58,7 @@
          <x>0</x>
          <y>0</y>
          <width>57</width>
-         <height>54</height>
+         <height>106</height>
         </rect>
        </property>
       </widget>
@@ -108,6 +108,7 @@
     <property name="title">
      <string>File</string>
     </property>
+    <addaction name="actionSave"/>
    </widget>
    <addaction name="menuFile"/>
   </widget>
@@ -143,6 +144,11 @@
    </property>
    <property name="shortcut">
     <string>N</string>
+   </property>
+  </action>
+  <action name="actionSave">
+   <property name="text">
+    <string>Save</string>
    </property>
   </action>
  </widget>

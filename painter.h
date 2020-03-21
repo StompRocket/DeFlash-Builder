@@ -13,10 +13,12 @@ class Painter : public QWidget
 public:
     explicit Painter(QWidget *parent = nullptr);
     void setSize(int width, int height);
-    int penWidth = 10;
+    void setPenWidth(int width);
+    int getPenWidth();
+    void setPenColor(QColor &color);
+    QColor getPenColor();
     double aspectRatio = 480 / 640; // height / width
     void setFrame(AnimationFrame *f);
-    QColor penColor = Qt::black;
     Tool tool = Tool::pen;
 
 public slots:
@@ -37,6 +39,7 @@ private:
     bool drawing = false;
     AnimationFrame *frame = nullptr;
     QPoint lastPoint;
+    QColor penColor;
 };
 
 #endif // PAINTER_H

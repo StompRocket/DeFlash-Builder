@@ -75,3 +75,8 @@ int AnimationFrame::getWidth() const
 {
     return width;
 }
+
+bool AnimationFrame::saveTo(QString path, const char *format)
+{
+    return image.save(path, format);
+}
