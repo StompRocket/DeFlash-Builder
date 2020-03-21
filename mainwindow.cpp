@@ -1,6 +1,7 @@
 #include "mainwindow.h"
 #include "./ui_mainwindow.h"
 #include "version.h"
+#include "videoexporter.h"
 
 #include <QDir>
 #include <QDateTime>
@@ -156,4 +157,11 @@ void MainWindow::on_actionSave_triggered()
 {
     qDebug() << "saving frames to" << frameDir;
     saveFrames();
+}
+
+void MainWindow::on_actionExport_triggered()
+{
+    VideoExporter x;
+    x.setFps(12);
+    qDebug() << "Rendering..." << x.render(frameDir, frameDir.filePath("output.mp4"));
 }

@@ -14,26 +14,28 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 find_package(Qt5 COMPONENTS Widgets REQUIRED)
 
 add_executable(deflash
-  main.cpp
-  mainwindow.cpp
-  mainwindow.h
-  mainwindow.ui
-  painter.cpp
-  painter.h
-  tool.h
-  projectdialog.cpp
-  projectdialog.h
-  projectdialog.ui
-  newprojectwizard.cpp
-  newprojectwizard.h
-  filepicker.cpp
-  filepicker.h
-  filepicker.ui
-  config.cpp
-  config.h
-  animationframe.h
-  animationframe.cpp
-  version.h
+    main.cpp
+    mainwindow.cpp
+    mainwindow.h
+    mainwindow.ui
+    painter.cpp
+    painter.h
+    tool.h
+    projectdialog.cpp
+    projectdialog.h
+    projectdialog.ui
+    newprojectwizard.cpp
+    newprojectwizard.h
+    filepicker.cpp
+    filepicker.h
+    filepicker.ui
+    config.cpp
+    config.h
+    animationframe.h
+    animationframe.cpp
+    version.h
+    videoexporter.cpp
+    videoexporter.h
 )
 
 target_link_libraries(deflash PRIVATE Qt5::Widgets)
