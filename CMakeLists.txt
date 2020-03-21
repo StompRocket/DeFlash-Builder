@@ -33,6 +33,7 @@ add_executable(create
   config.h
   animationframe.h
   animationframe.cpp
+  version.h
 )
 
 target_link_libraries(create PRIVATE Qt5::Widgets)

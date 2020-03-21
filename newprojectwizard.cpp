@@ -1,4 +1,6 @@
 #include "newprojectwizard.h"
+#include "config.h"
+#include "version.h"
 
 #include <QVBoxLayout>
 #include <QLayoutItem>
@@ -28,6 +30,11 @@ void NewProjectWizard::accept()
         return;
     }
     project.cd(projectName);
+
+    Config cfg{project.filePath("create.cfg")};
+    cfg.set("meta.create-version", createVersion);
+    cfg.set("frames.location", "frames");
+    cfg.save();
 
     emit projectCreated(project.path());
 }

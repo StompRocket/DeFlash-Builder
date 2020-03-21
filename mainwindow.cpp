@@ -1,11 +1,10 @@
 #include "mainwindow.h"
 #include "./ui_mainwindow.h"
+#include "version.h"
 
 #include <QDir>
 #include <QDateTime>
 #include <QDebug>
-
-const static double createVersion = 0.1;
 
 MainWindow::MainWindow(QString w, QWidget *parent)
     : QMainWindow(parent)
