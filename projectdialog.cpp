@@ -2,6 +2,7 @@
 #include "ui_projectdialog.h"
 #include "mainwindow.h"
 #include "newprojectwizard.h"
+#include "version.h"
 
 #include <QFileDialog>
 #include <QStandardPaths>
@@ -14,7 +15,7 @@ ProjectDialog::ProjectDialog(QWidget *parent) :
     ui->setupUi(this);
     setLayout(ui->verticalLayout);
     setContentsMargins(10, 10, 10, 10);
-    setWindowTitle("StompRocket Creator");
+    setWindowTitle(fullName);
 }
 
 ProjectDialog::~ProjectDialog()

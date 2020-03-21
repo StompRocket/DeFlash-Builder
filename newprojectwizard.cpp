@@ -10,7 +10,7 @@
 
 NewProjectWizard::NewProjectWizard(QWidget *parent) : QWizard(parent)
 {
-    setWindowTitle("New Creator Project");
+    setWindowTitle(QString("New %1 Project").arg(shortName));
 
     addPage(new IntroPage);
     addPage(new ProjectPage);
@@ -32,7 +32,7 @@ void NewProjectWizard::accept()
     project.cd(projectName);
 
     Config cfg{project.filePath("create.cfg")};
-    cfg.set("meta.create-version", createVersion);
+    cfg.set("meta.version", appVersion);
     cfg.set("frames.location", "frames");
     cfg.save();
 
@@ -43,8 +43,8 @@ IntroPage::IntroPage(QWidget *parent) : QWizardPage(parent)
 {
     setTitle("Introduction");
 
-    label = new QLabel("Welcome to StompRocket Creator. This wizard will help "
-                       "you create a new project.", this);
+    label = new QLabel(QString("Welcome to %1. This wizard will help "
+                       "you create a new project.").arg(fullName), this);
     label->setWordWrap(true);
 
     QVBoxLayout *layout = new QVBoxLayout;

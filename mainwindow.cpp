@@ -30,16 +30,16 @@ MainWindow::MainWindow(QString w, QWidget *parent)
     ui->frameSplitter->setStretchFactor(0, 100);
     setCentralWidget(ui->frameSplitter);
 
-    setWindowTitle(QString("StompRocket Create - %1").arg(where.path()));
+    setWindowTitle(QString("%1 - %2").arg(fullName).arg(where.path()));
 
-    double projectVersion = proj.getOrSet("meta.create-version", createVersion).toDouble();
+    double projectVersion = proj.getOrSet("meta.version", appVersion).toDouble();
 
     frameDir = QDir(where);
     QString frameSubDir = proj.getOrSet("frames.location", "rames").toString();
     qDebug() << "creating" << frameSubDir << frameDir.mkdir(frameSubDir);
     frameDir.cd(frameSubDir);
 
-    if (projectVersion > createVersion)
+    if (projectVersion > appVersion)
     {
         qDebug() << "Warning: Project created in a newer version of Create, it might not work.";
     }
